@@ -1,0 +1,56 @@
+version: '2'
+
+services:
+  haproxy:
+    build: ./haproxy/.
+    # restart: always
+    ports:
+     - '8080:8080'
+
+  php-fpm1:
+    build: ./php-fpm/.
+    # restart: always
+    volumes:
+     - "./code:/var/www/html/public"
+
+  php-fpm2:
+    build: ./php-fpm/.
+    # restart: always
+    volumes:
+     - "./code:/var/www/html/public"
+
+  php-fpm3:
+    build: ./php-fpm/.
+    # restart: always
+    volumes:
+     - "./code:/var/www/html/public"
+
+  nginx1:
+    build: ./nginx1/.
+    # restart: always
+    ports:
+     - "8081:80"
+    volumes:
+     - "./code:/var/www/html/public"
+    depends_on:
+     - php-fpm1
+
+  nginx2:
+    build: ./nginx2/.
+    # restart: always
+    ports:
+     - '8082:80'
+    volumes:
+     - "./code:/var/www/html/public"
+    depends_on:
+     - php-fpm2
+
+  nginx3:
+    build: ./nginx3/.
+    # restart: always
+    ports:
+     - '8083:80'
+    volumes:
+     - "./code:/var/www/html/public"
+    depends_on:
+     - php-fpm3
